@@ -7,7 +7,14 @@ const client = new Anthropic({
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages } = await req.json()
+    const rawBody = await req.text()
+    let messages
+    try {
+      const parsed = JSON.parse(rawBody)
+      messages = parsed.messages
+    } catch (parseErr) {
+      return NextResponse.json({ error: `Invalid JSON body: ${String(parseErr)}`, bodyPreview: rawBody.slice(0, 200) }, { status: 400 })
+    }
 
     const response = await client.messages.create({
       model: 'claude-sonnet-4-20250514',
