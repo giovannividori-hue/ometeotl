@@ -229,7 +229,7 @@ export default function HeroScene({ aiRef, govRef, evalRef }:{ aiRef: SectionRef
         uColor: { value: new (THREE as any).Color(WIRE_COLOR) }
       }
 
-      const edgePos = edgesGeo.attributes.position.array as Float32Array
+      const edgePos = (edgesGeo.attributes.position as any).array as Float32Array
       const aBase = new Float32Array(edgePos.length)
       for (let i = 0; i < edgePos.length; i++) aBase[i] = edgePos[i]
       edgesGeo.setAttribute('aBasePos', new THREE.BufferAttribute(aBase, 3))
