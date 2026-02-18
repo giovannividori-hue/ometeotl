@@ -16,9 +16,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: `Invalid JSON body: ${String(parseErr)}`, bodyPreview: rawBody.slice(0, 200) }, { status: 400 })
     }
 
+    // Anthropic Messages API expects a top-level `system` parameter instead
+    // of messages with role 'system'. Extract if present and pass separately.
+    let systemPrompt: string | undefined = undefined
+    if (Array.isArray(messages)) {
+      const sys = messages.find((m: any) => m.role === 'system')
+      if (sys && typeof sys.content === 'string') {
+        systemPrompt = sys.content
+      }
+      messages = messages.filter((m: any) => m.role !== 'system')
+    }
+
     const response = await client.messages.create({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1024,
+      system: systemPrompt,
       messages,
     })
 
