@@ -1,139 +1,410 @@
+'use client'
+
+import Link from "next/link"
+import { useEffect, useRef, useState } from "react"
+
 export default function Home() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    if (!canvasRef.current) return
+
+    let alive = true
+    let raf = 0
+
+    ;(async () => {
+      const THREE = await import("three")
+
+      const canvas = canvasRef.current!
+      const scene = new THREE.Scene()
+
+      const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000)
+      camera.position.z = 5.5
+
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+      renderer.setClearColor(0x080808, 1)
+
+      const resize = () => {
+        const rect = canvas.getBoundingClientRect()
+        const w = Math.max(1, Math.floor(rect.width))
+        const h = Math.max(1, Math.floor(rect.height))
+        renderer.setSize(w, h, false)
+        camera.aspect = w / h
+        camera.updateProjectionMatrix()
+      }
+      resize()
+
+      /* ── outer wireframe shell ── */
+      const geoOuter = new THREE.IcosahedronGeometry(1.7, 2)
+      const matOuter = new THREE.MeshBasicMaterial({
+        color: 0x1a3d38,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.55,
+      })
+      const meshOuter = new THREE.Mesh(geoOuter, matOuter)
+      scene.add(meshOuter)
+
+      /* ── inner denser shell ── */
+      const geoInner = new THREE.IcosahedronGeometry(1.1, 4)
+      const matInner = new THREE.MeshBasicMaterial({
+        color: 0x3d8f80,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.12,
+      })
+      const meshInner = new THREE.Mesh(geoInner, matInner)
+      scene.add(meshInner)
+
+      /* ── equatorial ring ── */
+      const ringGeo = new THREE.RingGeometry(1.85, 1.87, 96)
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 0x2d6b62,
+        transparent: true,
+        opacity: 0.18,
+        side: THREE.DoubleSide,
+      })
+      const ring = new THREE.Mesh(ringGeo, ringMat)
+      ring.rotation.x = Math.PI / 2
+      scene.add(ring)
+
+      const animate = () => {
+        if (!alive) return
+        meshOuter.rotation.y += 0.0018
+        meshOuter.rotation.x += 0.0006
+        meshInner.rotation.y -= 0.0022
+        meshInner.rotation.z += 0.0008
+        ring.rotation.z += 0.0004
+        renderer.render(scene, camera)
+        raf = requestAnimationFrame(animate)
+      }
+      raf = requestAnimationFrame(animate)
+
+      window.addEventListener("resize", resize)
+
+      return () => {
+        alive = false
+        cancelAnimationFrame(raf)
+        window.removeEventListener("resize", resize)
+        geoOuter.dispose(); matOuter.dispose()
+        geoInner.dispose(); matInner.dispose()
+        ringGeo.dispose();  ringMat.dispose()
+        renderer.dispose()
+        ;(renderer as any).forceContextLoss?.()
+      }
+    })()
+
+    return () => { cancelAnimationFrame(raf) }
+  }, [])
+
+  const ResearchCard: React.FC<{c: {index: string, title: string, text: string, href: string, img: string}}> = ({ c }) => {
+    const [hover, setHover] = useState(false)
+    return (
+      <article className="card" style={{ padding: 0, overflow: "hidden" }} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+        <div style={{ overflow: "hidden" }}>
+          <img
+            src={c.img}
+            alt={c.title}
+            style={{
+              width: "100%",
+              aspectRatio: "16/10",
+              objectFit: "cover",
+              display: "block",
+              transform: hover ? "scale(1.03)" : "scale(1)",
+              filter: hover ? "grayscale(0%)" : "grayscale(60%)",
+              transition: "transform 260ms ease, filter 260ms ease",
+            }}
+          />
+        </div>
+
+        <div style={{ padding: "24px" }}>
+          <div className="card-index">{c.index} —</div>
+          <h3 className="cardtitle" style={{ marginBottom: "12px" }}>{c.title}</h3>
+          <p className="cardtext">{c.text}</p>
+          <Link className="cardlink" href={c.href}>Explore →</Link>
+        </div>
+      </article>
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Background glow */}
-      <div className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.25),transparent_45%),radial-gradient(circle_at_80%_30%,rgba(148,163,184,0.18),transparent_40%),radial-gradient(circle_at_50%_80%,rgba(59,130,246,0.12),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0.35),rgba(0,0,0,0.85))]" />
-      </div>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--fg)" }}>
 
-      {/* Top nav */}
-      <header className="sticky top-0 z-20 border-b border-white/10 bg-black/40 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-full border border-white/20 bg-white/5" />
-            <span className="tracking-[0.25em] text-sm font-semibold">OMETEOTL</span>
-          </div>
+      {/* ── HEADER ─────────────────────────────────────── */}
+      <header style={{
+        position: "fixed", inset: "0 0 auto 0", zIndex: 50,
+        borderBottom: "1px solid var(--rule)",
+        background: "rgba(8,8,8,0.85)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+      }}>
+        <div style={{
+          maxWidth: "var(--max-wide)", margin: "0 auto",
+          padding: "0 40px", height: "60px",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+        }}>
+          <Link href="/" style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.7rem",
+            letterSpacing: "0.28em",
+            color: "var(--fg)",
+            textTransform: "uppercase",
+          }}>
+            OMETEOTL
+          </Link>
 
-          <nav className="hidden items-center gap-8 text-xs tracking-[0.18em] text-white/80 md:flex">
-            <a className="hover:text-white" href="#briefs">RESEARCH BRIEFS</a>
-            <a className="hover:text-white" href="#policy">POLICY FRAMEWORKS</a>
-            <a className="hover:text-white" href="#risk">RISK OBSERVATORY</a>
+          <nav style={{ display: "flex", alignItems: "center", gap: "32px" }}>
+            {["About", "Research", "Services"].map(s => (
+              <a key={s} href={`#${s.toLowerCase()}`} className="navlink">{s}</a>
+            ))}
+            <Link href="/resources" className="navlink">Resources</Link>
+            <Link href="/contact" className="navlink">Contact</Link>
           </nav>
-
-          <div className="flex items-center gap-3">
-            <a className="hidden text-xs text-white/70 hover:text-white md:inline" href="#about">ABOUT</a>
-            <a className="hidden text-xs text-white/70 hover:text-white md:inline" href="#contact">CONTACT</a>
-            <button className="rounded-md bg-blue-600/80 px-4 py-2 text-xs font-semibold tracking-wide hover:bg-blue-600">
-              JOIN OUR NEWSLETTER
-            </button>
-          </div>
         </div>
       </header>
 
-      {/* Hero */}
-      <main className="mx-auto max-w-6xl px-6">
-        <section className="py-16 md:py-24">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-8 md:p-14 shadow-[0_0_120px_rgba(59,130,246,0.12)]">
-            <div className="mx-auto max-w-3xl text-center">
-              <h1 className="text-4xl font-semibold tracking-[0.22em] md:text-6xl">
-                OMETEOTL
-              </h1>
-              <p className="mt-4 text-lg text-white/80 md:text-xl">
-                AI Risk &amp; Epistemic Safety Observatory
-              </p>
-              <p className="mx-auto mt-5 max-w-2xl text-sm leading-6 text-white/65">
-                Research and operational frameworks for emerging AI governance,
-                with focus on Global South deployment risks.
-              </p>
-
-              <div className="mt-8 flex justify-center">
-                <a
-                  href="#briefs"
-                  className="rounded-md border border-white/15 bg-blue-600/35 px-6 py-3 text-sm font-semibold hover:bg-blue-600/45"
-                >
-                  LEARN MORE
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Cards row */}
-        <section className="grid gap-6 pb-10 md:grid-cols-4">
-          <Card
-            id="briefs"
-            title="Research Briefs"
-            subtitle="GenAI Disinformation in Latin American Elections"
-            meta="APRIL 2024"
-            cta="READ BRIEF"
-          />
-          <Card
-            id="policy"
-            title="Policy Frameworks"
-            subtitle="AI Safety Challenges for the Global South"
-            meta="APRIL 2024"
-            cta="READ PAPER"
-          />
-          <Card
-            id="risk"
-            title="Risk Observatory"
-            subtitle="Hallucination Risks in Non-English Language Models"
-            meta="APRIL 26, 2024"
-            cta="READ ANALYSIS"
-          />
-          <Card
-            title="Epistemic Agent"
-            subtitle="Ask: “What’s the latest risk on X?”"
-            meta="Reliability: High (web sources cited)"
-            cta="TRY LIVE DEMO"
-            accent
-          />
-        </section>
-
-        {/* Footer */}
-        <footer className="border-t border-white/10 py-10 text-center text-xs text-white/50">
-          © {new Date().getFullYear()} OMETEOTL. All rights reserved.
-        </footer>
-      </main>
-    </div>
-  );
-}
-
-function Card(props: {
-  id?: string;
-  title: string;
-  subtitle: string;
-  meta: string;
-  cta: string;
-  accent?: boolean;
-}) {
-  return (
-    <div
-      id={props.id}
-      className={[
-        "rounded-2xl border border-white/10 bg-white/5 p-5",
-        "shadow-[0_0_70px_rgba(0,0,0,0.35)]",
-        props.accent ? "bg-blue-500/10" : "",
-      ].join(" ")}
-    >
-      <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold tracking-wide text-white/90">
-          {props.title}
-        </h3>
-        <span className="text-[10px] tracking-[0.2em] text-white/45">VIEW ALL</span>
-      </div>
-
-      <div className="mt-4">
-        <div className="text-[10px] tracking-[0.18em] text-white/45">{props.meta}</div>
-        <div className="mt-2 text-sm font-semibold leading-5 text-white/85">
-          {props.subtitle}
+      {/* ── HERO ───────────────────────────────────────── */}
+      <section id="top" style={{ position: "relative", minHeight: "100vh", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0 }}>
+          <canvas ref={canvasRef} style={{ width: "100%", height: "100%", display: "block" }} />
         </div>
-      </div>
 
-      <button className="mt-5 w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-xs font-semibold tracking-wide text-white/85 hover:bg-white/10">
-        {props.cta}
-      </button>
+        {/* gradient vignette */}
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, rgba(8,8,8,0.65) 100%)",
+          pointerEvents: "none",
+        }} />
+
+        <div style={{
+          position: "relative", zIndex: 10,
+          minHeight: "100vh",
+          display: "flex", flexDirection: "column",
+          alignItems: "center", justifyContent: "center",
+          textAlign: "center", padding: "0 40px",
+        }}>
+          <div style={{ maxWidth: "640px" }}>
+            <div className="label" style={{ marginBottom: "28px", opacity: 0.5 }}>
+              Lima, Peru — Est. 2024
+            </div>
+
+            <h1 style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 300,
+              letterSpacing: "-0.03em",
+              color: "var(--fg)",
+              lineHeight: 1.05,
+            }}>
+              OMETEOTL
+            </h1>
+
+            <div style={{
+              margin: "24px auto",
+              width: "40px", height: "1px",
+              background: "var(--accent)",
+              opacity: 0.5,
+            }} />
+
+            <p style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.75rem",
+              letterSpacing: "0.1em",
+              color: "var(--fg-mid)",
+              textTransform: "uppercase",
+              lineHeight: 1.8,
+            }}>
+              AI Risk &amp; Epistemic Reliability Lab<br />
+              Latin America
+            </p>
+          </div>
+
+          {/* scroll indicator */}
+          <div style={{
+            position: "absolute", bottom: "36px",
+            display: "flex", flexDirection: "column",
+            alignItems: "center", gap: "8px",
+          }}>
+            <div className="label" style={{ opacity: 0.3, fontSize: "0.55rem" }}>Scroll</div>
+            <div style={{ width: "1px", height: "36px", background: "var(--rule-mid)" }} />
+          </div>
+        </div>
+      </section>
+
+      {/* ── ABOUT ──────────────────────────────────────── */}
+      <section id="about" style={{
+        maxWidth: "var(--max-text)",
+        margin: "0 auto",
+        padding: "140px 40px",
+      }}>
+        <div className="label" style={{ marginBottom: "40px" }}>About</div>
+
+        <h2 style={{ marginBottom: "32px" }}>
+          Ometeotl is a Latin America–focused applied research lab advancing AI risk oversight, institutional accountability, and epistemic reliability
+        </h2>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <p>
+            We examine how probabilistic AI systems—particularly large-scale language and decision-support models—reconfigure standards of evidence, authority, and responsibility within public and organizational institutions.
+          </p>
+          <p>
+            Our research integrates epistemic analysis, institutional design, and contextual adaptation to identify the conditions under which AI-assisted processes remain robust under uncertainty and model failure.
+          </p>
+          <p>
+            We develop analytically grounded oversight frameworks that translate technical limitations into operational governance structures. Grounded in regional institutional realities, our work advances accountable, resilient AI deployment across diverse socio-technical environments.
+          </p>
+        </div>
+      </section>
+
+      {/* ── RESEARCH ───────────────────────────────────── */}
+      <section id="research" style={{
+        maxWidth: "var(--max-wide)",
+        margin: "0 auto",
+        padding: "0 40px 140px",
+      }}>
+
+        {/* header row */}
+        <div style={{
+          display: "flex", alignItems: "baseline", justifyContent: "space-between",
+          borderTop: "1px solid var(--rule-mid)",
+          paddingTop: "32px",
+          marginBottom: "0",
+        }}>
+          <div className="label">Research</div>
+          <span style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.6rem",
+            color: "var(--fg-low)",
+            letterSpacing: "0.1em",
+          }}>
+            3 active lines
+          </span>
+        </div>
+
+        <h2 style={{ margin: "20px 0 56px", maxWidth: "520px" }}>
+          Research that holds in deployment
+        </h2>
+
+        {/* card grid — horizontal rule style */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "0 48px",
+        }}>
+          {
+            (
+              [
+                {
+                  index: "01",
+                  title: "AI Risk & Epistemic Reliability",
+                  text: "Mapping systemic capability risks and the epistemic conditions under which AI-assisted processes remain robust, auditable, and decision-relevant.",
+                  href: "/research/ai-risk-epistemic-reliability",
+                  img: "/images/research/ai-risk.png",
+                },
+                {
+                  index: "02",
+                  title: "Governance & Institutional Accountability",
+                  text: "Designing decision-right structures, escalation pathways, documentation standards, and oversight mechanisms that embed AI systems within accountable institutional workflows.",
+                  href: "/research/governance-institutional-accountability",
+                  img: "/images/research/governance.png",
+                },
+                {
+                  index: "03",
+                  title: "Contextual Epistemic Adaptation & Cross-Cultural AI Systems",
+                  text: "Analyzing how AI systems interact with diverse linguistic, cultural, and institutional epistemologies—and developing integration models for context-sensitive, socially legitimate deployment.",
+                  href: "/research/contextual-epistemic-adaptation",
+                  img: "/images/research/contextual.png",
+                },
+              ]
+            ).map(c => (
+              <ResearchCard key={c.index} c={c} />
+            ))
+          }
+        </div>
+      </section>
+
+      {/* ── SERVICES ───────────────────────────────────── */}
+      <section id="services" style={{
+        maxWidth: "var(--max-text)",
+        margin: "0 auto",
+        padding: "0 40px 140px",
+        borderTop: "1px solid var(--rule)",
+        paddingTop: "80px",
+      }}>
+        <div className="label" style={{ marginBottom: "40px" }}>Services</div>
+
+        <h2 style={{ marginBottom: "32px" }}>
+          Responsible AI integration frameworks
+        </h2>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <p>
+            We design and implement responsible AI integration frameworks for public institutions, NGOs, and private organizations—covering governance design, technical risk evaluation, and operational oversight.
+          </p>
+          <p>
+            Our engagements span the full AI adoption lifecycle: epistemic risk diagnostics, model and data documentation standards, evaluation protocol design, red-teaming coordination, and deployment monitoring. We map socio-technical failure modes, structure accountability pathways, and embed escalation and audit mechanisms into institutional workflows.
+          </p>
+          <p>
+            Our objective is institutional robustness—ensuring AI systems enhance decision quality and public trust without degrading accountability, human agency, or epistemic standards.
+          </p>
+        </div>
+
+        <div style={{ marginTop: "36px" }}>
+          <Link href="/services" className="cta-link">View services →</Link>
+        </div>
+      </section>
+
+      {/* ── FOOTER ─────────────────────────────────────── */}
+      <footer style={{ borderTop: "1px solid var(--rule)" }}>
+        <div style={{
+          maxWidth: "var(--max-wide)",
+          margin: "0 auto",
+          padding: "56px 40px",
+          display: "grid",
+          gridTemplateColumns: "1fr auto",
+          alignItems: "end",
+          gap: "40px",
+        }}>
+          <div>
+            <div style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.625rem",
+              letterSpacing: "0.28em",
+              color: "var(--fg)",
+              textTransform: "uppercase",
+              marginBottom: "16px",
+            }}>
+              OMETEOTL
+            </div>
+            <p style={{ fontSize: "0.8125rem", marginBottom: "4px" }}>AI Risk &amp; Epistemic Reliability Lab</p>
+            <p style={{ fontSize: "0.8125rem", marginBottom: "16px" }}>Lima, Peru</p>
+            <a
+              href="mailto:contact@ometeotl.org"
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.7rem",
+                letterSpacing: "0.06em",
+                color: "var(--accent)",
+                borderBottom: "1px solid rgba(200,184,154,0.25)",
+                paddingBottom: "2px",
+                transition: "border-color 140ms",
+              }}
+            >
+              contact@ometeotl.org
+            </a>
+          </div>
+
+          <div style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.6rem",
+            letterSpacing: "0.1em",
+            color: "var(--fg-low)",
+            textTransform: "uppercase",
+          }}>
+            © 2026 Ometeotl
+          </div>
+        </div>
+      </footer>
     </div>
-  );
+  )
 }
