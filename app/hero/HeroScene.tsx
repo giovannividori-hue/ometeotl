@@ -131,7 +131,7 @@ export default function HeroScene({ aiRef, govRef, evalRef }:{ aiRef: SectionRef
       scene.add(groupHero)
 
       const sphereGeo = new THREE.IcosahedronGeometry(1.5, 4)
-      const posAttr = sphereGeo.attributes.position
+      const posAttr = sphereGeo.attributes.position as any
       const basePos = new Float32Array((posAttr.count as number) * 3)
       for (let i = 0; i < (posAttr.count as number); i++) {
         basePos[i * 3] = posAttr.getX(i)
