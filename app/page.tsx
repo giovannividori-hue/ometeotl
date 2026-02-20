@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react"
 function ResearchCard({ c }: { c: { index: string; title: string; text: string; href: string; img: string } }) {
   const [hover, setHover] = useState(false)
   return (
-    <article className="card" style={{ padding: 0, overflow: "hidden" }} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+    <article className="card" style={{ padding: 0, overflow: "hidden", background: "#0f5460" }} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
       <div style={{ overflow: "hidden" }}>
         <img
           src={c.img}
@@ -24,10 +24,10 @@ function ResearchCard({ c }: { c: { index: string; title: string; text: string; 
       </div>
 
       <div style={{ padding: "24px" }}>
-        <div className="card-index">{c.index} —</div>
-        <h3 className="cardtitle" style={{ marginBottom: "12px" }}>{c.title}</h3>
-        <p className="cardtext">{c.text}</p>
-        <Link className="cardlink" href={c.href}>Explore →</Link>
+        <div className="card-index" style={{ color: "rgba(255,255,255,0.5)" }}>{c.index} —</div>
+        <h3 className="cardtitle" style={{ marginBottom: "12px", color: "#ffffff" }}>{c.title}</h3>
+        <p className="cardtext" style={{ color: "rgba(255,255,255,0.75)" }}>{c.text}</p>
+        <Link className="cardlink" href={c.href} style={{ color: "rgba(255,255,255,0.6)" }}>Explore →</Link>
       </div>
     </article>
   )
