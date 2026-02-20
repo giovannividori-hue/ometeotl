@@ -9,25 +9,13 @@ function ResearchCard({ c }: { c: Card }) {
   return (
     <article className="overflow-hidden bg-[#0f5460]">
       <div className="overflow-hidden">
-        <img
-          src={c.img}
-          alt={c.title}
-          className="block aspect-[16/10] w-full object-cover grayscale-[40%]"
-        />
+        <img src={c.img} alt={c.title} className="block aspect-[16/10] w-full object-cover grayscale-[40%]" />
       </div>
       <div className="px-5 py-4">
-        <div className="mb-4 font-mono text-[28px] font-semibold tracking-[-0.01em] text-white/30 leading-none">
-          {c.index}
-        </div>
-        <h3 className="mb-3 font-sans text-[14px] font-semibold leading-snug text-white tracking-[-0.01em]">
-          {c.title}
-        </h3>
-        <p className="mb-5 text-[13px] leading-[1.65] text-white/65 font-sans">
-          {c.text}
-        </p>
-        <Link href={c.href} className="font-mono text-[10px] tracking-[0.14em] text-white/45 border-b border-white/15 pb-px">
-          Explore →
-        </Link>
+        <div className="mb-4 font-mono text-[28px] font-semibold tracking-[-0.01em] text-white/30 leading-none">{c.index}</div>
+        <h3 className="mb-3 font-sans text-[14px] font-semibold leading-snug text-white tracking-[-0.01em]">{c.title}</h3>
+        <p className="mb-5 text-[13px] leading-[1.65] text-white/65 font-sans">{c.text}</p>
+        <Link href={c.href} className="font-mono text-[10px] tracking-[0.14em] text-white/45 border-b border-white/15 pb-px">Explore →</Link>
       </div>
     </article>
   )
@@ -127,18 +115,18 @@ export default function Home() {
   }, [])
 
   const container = "mx-auto w-full max-w-[1240px] px-6 lg:px-10"
-  const teal = "bg-[#0f5460]"
+  const charcoal = "#2B2D31" /* CHANGED: replaced #1c1e20 with --ui-charcoal equivalent #2B2D31 */
 
   return (
     <div className="min-h-screen bg-white text-neutral-900">
 
-      {/* HEADER */}
-        <header className={`sticky top-0 z-50 border-b border-white/10`} style={{ background: 'var(--ui-charcoal)' }}> {/* CHANGED: make header sticky and use --ui-charcoal token */}
-          <div className="border-b border-white/10" style={{ background: 'var(--ui-charcoal)' }}>
+      {/* HEADER — sticky, charcoal, does not move on scroll */}
+      <header className="sticky top-0 z-50 border-b border-white/10" style={{ background: charcoal }}>
+        <div className="border-b border-white/10" style={{ background: charcoal }}>
           <div className={`${container} py-[5px]`}>
-              <div className="font-mono text-[10px] tracking-[0.08em]" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                Est. 2024 · Lima, Peru · 3 Active Research Lines ·{" "}
-                <a className="underline underline-offset-4" href="mailto:contact@ometeotl.org" style={{ color: 'rgba(255,255,255,0.75)' }}>contact@ometeotl.org</a>
+            <div className="font-mono text-[10px] tracking-[0.08em] text-white/60">
+              Est. 2024 · Lima, Peru · 3 Active Research Lines ·{" "}
+              <a className="underline underline-offset-4 hover:text-white/80" href="mailto:contact@ometeotl.org">contact@ometeotl.org</a>
             </div>
           </div>
         </div>
@@ -146,20 +134,20 @@ export default function Home() {
           <Link href="/" className="font-sans text-[13px] font-semibold tracking-[0.18em] text-white uppercase">OMETEOTL</Link>
           <nav className="flex items-center gap-7">
             {["About", "Research", "Services"].map((s) => (
-              <a key={s} href={`#${s.toLowerCase()}`} className="nav-link font-sans text-[12px] tracking-[0.06em] text-white/75 hover:text-white transition-colors">{s}</a>
+              <a key={s} href={`#${s.toLowerCase()}`} className="font-sans text-[12px] tracking-[0.06em] text-white/70 hover:text-white transition-colors">{s}</a>
             ))}
-            <Link href="/resources" className="nav-link font-sans text-[12px] tracking-[0.06em] text-white/75 hover:text-white transition-colors">Resources</Link>
-            <Link href="/contact" className="nav-link font-sans text-[12px] tracking-[0.06em] text-white/75 hover:text-white transition-colors">Contact</Link>
+            <Link href="/resources" className="font-sans text-[12px] tracking-[0.06em] text-white/70 hover:text-white transition-colors">Resources</Link>
+            <Link href="/contact" className="font-sans text-[12px] tracking-[0.06em] text-white/70 hover:text-white transition-colors">Contact</Link>
           </nav>
         </div>
       </header>
 
-      {/* HERO — 62vh, no scroll ornament */}
-      <section id="top" className={`relative min-h-[62vh] overflow-hidden ${teal} pt-20`}>
+      {/* HERO — no pt-20, height is true 52vh */}
+      <section id="top" className="relative overflow-hidden bg-[#0f5460]" style={{ minHeight: '52vh' }}>
         <div className="absolute inset-0">
           <canvas ref={canvasRef} width={1} height={1} className="h-full w-full block" />
         </div>
-        <div className="relative z-10 min-h-[62vh] flex items-center">
+        <div className="relative z-10 flex items-center" style={{ minHeight: '52vh' }}>
           <div className={container}>
             <div className="max-w-[52ch]">
               <h1 className="font-sans text-[36px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.04] text-white">
@@ -232,15 +220,15 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[#202124]"> {/* CHANGED: footer background -> deep charcoal */}
+      <footer style={{ background: charcoal }}>
         <div className={`${container} py-14 grid grid-cols-1 gap-8 md:grid-cols-[1fr_auto] md:items-end`}>
           <div>
-              <div className="font-mono text-[10px] tracking-[0.28em] uppercase mb-3" style={{ color: 'rgba(255,255,255,0.90)' }}>OMETEOTL</div>
-              <p className="font-sans text-[13px] mb-1" style={{ color: 'rgba(255,255,255,0.70)' }}>AI Risk & Epistemic Reliability Lab</p>
-              <p className="font-sans text-[13px] mb-4" style={{ color: 'rgba(255,255,255,0.70)' }}>Lima, Peru</p>
-              <a href="mailto:contact@ometeotl.org" className="font-mono text-[11px] tracking-[0.1em] underline decoration-white/20 underline-offset-[5px] hover:text-white/75" style={{ color: 'rgba(255,255,255,0.70)' }}>contact@ometeotl.org</a>
+            <div className="font-mono text-[10px] tracking-[0.28em] text-white/50 uppercase mb-3">OMETEOTL</div>
+            <p className="font-sans text-[13px] text-white/70 mb-1">AI Risk & Epistemic Reliability Lab</p>
+            <p className="font-sans text-[13px] text-white/70 mb-4">Lima, Peru</p>
+            <a href="mailto:contact@ometeotl.org" className="font-mono text-[11px] tracking-[0.1em] text-white/55 underline decoration-white/20 underline-offset-[5px] hover:text-white/75">contact@ometeotl.org</a>
           </div>
-            <div className="font-mono text-[10px] tracking-[0.14em] uppercase" style={{ color: 'rgba(255,255,255,0.70)' }}>© 2026 Ometeotl</div>
+          <div className="font-mono text-[10px] tracking-[0.14em] text-white/35 uppercase">© 2026 Ometeotl</div>
         </div>
       </footer>
     </div>
