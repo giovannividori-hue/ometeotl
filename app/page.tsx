@@ -121,7 +121,7 @@ export default function Home() {
     <div className="min-h-screen bg-white text-neutral-900">
 
       {/* HEADER — sticky, charcoal, does not move on scroll */}
-      <header className="sticky top-0 z-50 border-b border-white/10" style={{ background: charcoal }}>
+      <header className="sticky top-0 z-50" style={{ background: charcoal }}>
         {/* Top strip visually merged into header (no separate background/border) */}
         <div style={{ padding: 0 }}>
           <div className={`${container} py-[5px]`}>
