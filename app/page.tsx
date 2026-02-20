@@ -40,8 +40,8 @@ export default function Home() {
     if (!canvasRef.current) return
 
     let alive = true
-      {/* ── FOOTER ── */}
-      <footer style={{ background: "var(--ui-charcoal)" }}>
+    let raf = 0
+    let innerCleanup: (() => void) | null = null
     let ro: ResizeObserver | null = null
     let io: IntersectionObserver | null = null
     let isPaused = false
@@ -54,38 +54,34 @@ export default function Home() {
         const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000)
         camera.position.z = 5.5
         const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
-              fontSize: "0.625rem",
-              letterSpacing: "0.28em",
-              color: "rgba(255,255,255,0.90)", /* primary footer label uses near-white */
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+        renderer.setClearColor(0x000000, 0)
+
         const resize = () => {
           const rect = canvas.getBoundingClientRect()
           const w = Math.max(1, Math.floor(rect.width))
           const h = Math.max(1, Math.floor(rect.height))
           renderer.setSize(w, h, false)
-            <p style={{ fontSize: "0.8125rem", marginBottom: "6px", color: "rgba(255,255,255,0.70)", fontFamily: "Georgia, serif" }}>AI Risk & Epistemic Reliability Lab</p>
-            <p style={{ fontSize: "0.8125rem", marginBottom: "16px", color: "rgba(255,255,255,0.70)", fontFamily: "Georgia, serif" }}>Lima, Peru</p>
-            <a
-              href="mailto:contact@ometeotl.org"
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.7rem",
-                letterSpacing: "0.06em",
-                color: "rgba(255,255,255,0.85)", /* links use text-white/85 */
-                borderBottom: "1px solid rgba(255,255,255,0.12)",
-                paddingBottom: "2px",
-                display: "inline-block",
-                textDecoration: "none",
-              }}
-            >
-              contact@ometeotl.org
-            </a>
+          camera.aspect = w / h
+          camera.updateProjectionMatrix()
+        }
+        resize()
+        try { ro = new ResizeObserver(() => resize()); ro.observe(canvas) }
+        catch { window.addEventListener("load", resize) }
+
+        const sphereScale = 0.6
+        const sphereGroup = new THREE.Group()
+
+        const geoOuter = new THREE.IcosahedronGeometry(1.7 * sphereScale, 2)
+        const matOuter = new THREE.MeshBasicMaterial({ color: 0x333333, wireframe: true, transparent: true, opacity: 0.22 })
+        const meshOuter = new THREE.Mesh(geoOuter, matOuter)
         sphereGroup.add(meshOuter)
 
         const geoInner = new THREE.IcosahedronGeometry(1.1 * sphereScale, 4)
         const matInner = new THREE.MeshBasicMaterial({ color: 0x333333, wireframe: true, transparent: true, opacity: 0.22 })
-            fontSize: "0.6rem",
-            letterSpacing: "0.1em",
-            color: "rgba(255,255,255,0.70)", /* secondary footer text */
+        const meshInner = new THREE.Mesh(geoInner, matInner)
+        sphereGroup.add(meshInner)
+
         const ringGeo = new THREE.RingGeometry(1.85 * sphereScale, 1.87 * sphereScale, 96)
         const ringMat = new THREE.MeshBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.08, side: THREE.DoubleSide })
         const ring = new THREE.Mesh(ringGeo, ringMat)
