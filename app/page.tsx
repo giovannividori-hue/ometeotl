@@ -122,11 +122,12 @@ export default function Home() {
 
       {/* HEADER — sticky, charcoal, does not move on scroll */}
       <header className="sticky top-0 z-50 border-b border-white/10" style={{ background: charcoal }}>
-        <div className="border-b border-white/10" style={{ background: charcoal }}>
+        {/* Top strip visually merged into header (no separate background/border) */}
+        <div style={{ padding: 0 }}>
           <div className={`${container} py-[5px]`}>
-            <div className="font-mono text-[10px] tracking-[0.08em] text-white/60">
+            <div className="font-mono text-[10px] tracking-[0.08em]" style={{ color: 'rgba(255,255,255,0.75)' }}>
               Est. 2024 · Lima, Peru · 3 Active Research Lines ·{" "}
-              <a className="underline underline-offset-4 hover:text-white/80" href="mailto:contact@ometeotl.org">contact@ometeotl.org</a>
+              <a className="underline underline-offset-4" href="mailto:contact@ometeotl.org" style={{ color: 'rgba(255,255,255,0.75)' }}>contact@ometeotl.org</a>
             </div>
           </div>
         </div>
@@ -150,7 +151,7 @@ export default function Home() {
         <div className="relative z-10 flex items-center" style={{ minHeight: '52vh' }}>
           <div className={container}>
             <div className="max-w-[52ch]">
-              <h1 className="font-sans text-[36px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.04] text-white">
+              <h1 className="font-sans text-[36px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.04] text-white" style={{ color: '#ffffff' }}>
                 OMETEOTL
               </h1>
               <div className="mt-4 h-[1px] w-10 bg-white/35" />
