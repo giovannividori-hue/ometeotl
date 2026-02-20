@@ -151,7 +151,7 @@ export default function Home() {
       {/* ── HEADER — charcoal navbar; institutional teal bar kept above ── */}
       <header style={{
         position: "fixed", inset: "0 0 auto 0", zIndex: 50,
-        background: "#202124", /* CHANGED: navbar background -> deep charcoal */
+        background: "var(--ui-charcoal)", /* CHANGED: use --ui-charcoal token */
         borderBottom: "1px solid rgba(255,255,255,0.08)",
       }}>
         {/* Institutional data bar */}
@@ -434,22 +434,22 @@ export default function Home() {
               fontFamily: "var(--font-mono)",
               fontSize: "0.625rem",
               letterSpacing: "0.28em",
-              color: "rgba(224,224,224,0.6)", /* CHANGED: lighter near-white for subtle emphasis */
+              color: "rgba(255,255,255,0.90)", /* CHANGED: primary footer label uses near-white */
               textTransform: "uppercase",
               marginBottom: "16px",
             }}>
               OMETEOTL
             </div>
-            <p style={{ fontSize: "0.8125rem", marginBottom: "6px", color: "rgba(224,224,224,0.85)", fontFamily: "Georgia, serif" }}>AI Risk & Epistemic Reliability Lab</p>
-            <p style={{ fontSize: "0.8125rem", marginBottom: "16px", color: "rgba(224,224,224,0.85)", fontFamily: "Georgia, serif" }}>Lima, Peru</p>
+            <p style={{ fontSize: "0.8125rem", marginBottom: "6px", color: "rgba(255,255,255,0.70)", fontFamily: "Georgia, serif" }}>AI Risk & Epistemic Reliability Lab</p>
+            <p style={{ fontSize: "0.8125rem", marginBottom: "16px", color: "rgba(255,255,255,0.70)", fontFamily: "Georgia, serif" }}>Lima, Peru</p>
             <a
               href="mailto:contact@ometeotl.org"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "0.7rem",
                 letterSpacing: "0.06em",
-                color: "rgba(224,224,224,0.85)",
-                borderBottom: "1px solid rgba(224,224,224,0.15)",
+                color: "rgba(255,255,255,0.70)", /* CHANGED: secondary footer/contact text uses text-white/70 */
+                borderBottom: "1px solid rgba(255,255,255,0.12)",
                 paddingBottom: "2px",
                 display: "inline-block",
                 textDecoration: "none",
@@ -463,7 +463,7 @@ export default function Home() {
             fontFamily: "var(--font-mono)",
             fontSize: "0.6rem",
             letterSpacing: "0.1em",
-            color: "rgba(224,224,224,0.6)",
+            color: "rgba(255,255,255,0.70)", /* CHANGED: secondary footer text */
             textTransform: "uppercase",
           }}>
             © 2026 Ometeotl

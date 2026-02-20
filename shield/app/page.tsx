@@ -134,10 +134,10 @@ export default function Home() {
 
       {/* HEADER */}
       <header className={`fixed inset-x-0 top-0 z-50 bg-[#202124] border-b border-white/10`}> {/* CHANGED: navbar background -> deep charcoal */}
-        <div className="border-b border-white/10 bg-[#0a3d47]">
+          <div className="border-b border-white/10" style={{ background: 'var(--ui-charcoal)' }}>
           <div className={`${container} py-[5px]`}>
             <div className="font-mono text-[10px] tracking-[0.08em] text-white/60">
-              Est. 2024 · Lima, Peru · 3 Active Research Lines ·{" "}
+                Est. 2024 · Lima, Peru · 3 Active Research Lines ·{" "}
               <a className="underline underline-offset-4 hover:text-white/80" href="mailto:contact@ometeotl.org">contact@ometeotl.org</a>
             </div>
           </div>
@@ -235,12 +235,12 @@ export default function Home() {
       <footer className="bg-[#202124]"> {/* CHANGED: footer background -> deep charcoal */}
         <div className={`${container} py-14 grid grid-cols-1 gap-8 md:grid-cols-[1fr_auto] md:items-end`}>
           <div>
-            <div className="font-mono text-[10px] tracking-[0.28em] uppercase mb-3" style={{ color: 'rgba(224,224,224,0.6)' }}>OMETEOTL</div>
-            <p className="font-sans text-[13px] mb-1" style={{ color: 'rgba(224,224,224,0.85)' }}>AI Risk & Epistemic Reliability Lab</p>
-            <p className="font-sans text-[13px] mb-4" style={{ color: 'rgba(224,224,224,0.85)' }}>Lima, Peru</p>
-            <a href="mailto:contact@ometeotl.org" className="font-mono text-[11px] tracking-[0.1em] underline decoration-white/20 underline-offset-[5px] hover:text-white/75" style={{ color: 'rgba(224,224,224,0.8)' }}>contact@ometeotl.org</a>
+              <div className="font-mono text-[10px] tracking-[0.28em] uppercase mb-3" style={{ color: 'rgba(255,255,255,0.90)' }}>OMETEOTL</div>
+              <p className="font-sans text-[13px] mb-1" style={{ color: 'rgba(255,255,255,0.70)' }}>AI Risk & Epistemic Reliability Lab</p>
+              <p className="font-sans text-[13px] mb-4" style={{ color: 'rgba(255,255,255,0.70)' }}>Lima, Peru</p>
+              <a href="mailto:contact@ometeotl.org" className="font-mono text-[11px] tracking-[0.1em] underline decoration-white/20 underline-offset-[5px] hover:text-white/75" style={{ color: 'rgba(255,255,255,0.70)' }}>contact@ometeotl.org</a>
           </div>
-          <div className="font-mono text-[10px] tracking-[0.14em] uppercase" style={{ color: 'rgba(224,224,224,0.6)' }}>© 2026 Ometeotl</div>
+            <div className="font-mono text-[10px] tracking-[0.14em] uppercase" style={{ color: 'rgba(255,255,255,0.70)' }}>© 2026 Ometeotl</div>
         </div>
       </footer>
     </div>
