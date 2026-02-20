@@ -154,12 +154,12 @@ export default function Home() {
         </div>
       </header>
 
-      {/* HERO — 70vh, no scroll ornament */}
-      <section id="top" className={`relative min-h-[70vh] overflow-hidden ${teal} pt-20`}>
+      {/* HERO — 62vh, no scroll ornament */}
+      <section id="top" className={`relative min-h-[62vh] overflow-hidden ${teal} pt-20`}>
         <div className="absolute inset-0">
           <canvas ref={canvasRef} width={1} height={1} className="h-full w-full block" />
         </div>
-        <div className="relative z-10 min-h-[70vh] flex items-center">
+        <div className="relative z-10 min-h-[62vh] flex items-center">
           <div className={container}>
             <div className="max-w-[52ch]">
               <h1 className="font-sans text-[36px] md:text-[40px] font-semibold tracking-[-0.02em] leading-[1.04] text-white">
