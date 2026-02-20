@@ -1,188 +1,84 @@
 @import "tailwindcss";
 
 :root {
-  /* Core palette – slightly more neutral / less expressive */
   --bg:        #ffffff;
   --fg:        #151515;
   --fg-mid:    #4a4a4a;
   --fg-low:    #8a8a8a;
-
-  /* Institutional teal (desaturated 8%) */
-  --accent:    #0e4d57;
-  --accent-hi: #093a42;
-
+  --accent:    #0f5460;
+  --accent-hi: #0a3d47;
   --rule:      rgba(17,17,17,0.05);
   --rule-mid:  rgba(17,17,17,0.08);
-
   --font-sans: 'DM Sans', system-ui, sans-serif;
   --font-mono: 'DM Mono', 'Courier New', monospace;
-
   --max-text:  720px;
   --max-wide:  1240px;
-
-  --section-y: 112px;
 }
 
-/* Reset */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
-  font-size: 16.5px; /* Slightly reduced for academic tone */
+  font-size: 16px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
 }
 
-body {
-  background: var(--bg);
-  min-height: 100vh;
-}
+body { background: var(--bg); min-height: 100vh; }
 
-/* Skip link: initially offscreen, visible when focused via keyboard */
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 12px;
-  padding: 10px 12px;
-  background: #ffffff;
-  border: 1px solid rgba(0,0,0,0.15);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  z-index: 9999;
-  transition: left 160ms ease;
+/* Nav link styles for charcoal navbar: subtle hover (lighten + underline) */
+.nav-link {
+  color: rgba(255,255,255,0.85);
+  transition: color 140ms ease, text-decoration-color 140ms ease;
 }
-
-.skip-link:focus {
-  left: 12px;
+.nav-link:hover,
+.nav-link:focus {
+  color: rgba(255,255,255,0.96);
+  text-decoration: underline;
+  text-decoration-color: rgba(255,255,255,0.12);
 }
-
-/* ───────────────────────── */
-/* Typography – Swiss style */
-/* ───────────────────────── */
 
 h1, h2, h3 {
   font-family: var(--font-sans);
-  font-weight: 600; /* ETH rarely uses heavy bold */
+  font-weight: 600;
   letter-spacing: -0.015em;
   line-height: 1.08;
   color: var(--fg);
 }
 
-h1 {
-  font-size: clamp(2.4rem, 5vw, 3.8rem);
-}
-
-h2 {
-  font-size: clamp(1.45rem, 2.8vw, 2.1rem);
-}
-
-h3 {
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
+h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); }
+h2 { font-size: clamp(1.4rem, 2.8vw, 2rem); }
+h3 { font-size: 0.95rem; font-weight: 600; }
 
 p {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 0.95rem;
-  line-height: 1.8;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.75;
   color: var(--fg-mid);
-  max-width: 70ch;
 }
 
-/* Links – subtle underline, not buttony */
-a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: rgba(0,0,0,0.15);
-  text-underline-offset: 4px;
-  transition: text-decoration-color 140ms ease, color 140ms ease;
-}
+a { color: inherit; text-decoration: none; }
 
-a:hover {
-  text-decoration-color: rgba(0,0,0,0.35);
-}
+section { scroll-margin-top: 100px; }
 
-/* ───────────────────────── */
-/* Structural rhythm         */
-/* ───────────────────────── */
-
-section {
-  scroll-margin-top: 100px;
-  padding-top: var(--section-y);
-  padding-bottom: var(--section-y);
-}
-
-hr {
-  border: none;
-  height: 1px;
-  background: var(--rule);
-}
-
-/* ───────────────────────── */
-/* Scrollbar – ultra subtle  */
-/* ───────────────────────── */
-
-::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.12);
-  border-radius: 2px;
-}
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.10); border-radius: 2px; }
 
-/* ───────────────────────── */
-/* Selection – muted accent  */
-/* ───────────────────────── */
-
-::selection {
-  background: rgba(14,77,87,0.12);
-}
-
-/* ───────────────────────── */
-/* Mobile refinement         */
-/* ───────────────────────── */
+::selection { background: rgba(15,84,96,0.10); }
 
 @media (max-width: 768px) {
-
-  html { font-size: 16px; }
-
-  section {
-    padding-left: 22px !important;
-    padding-right: 22px !important;
-  }
-
-  header > div {
-    padding-left: 22px !important;
-    padding-right: 22px !important;
-  }
-
-  header nav {
-    display: flex !important;
-    width: 100%;
-    justify-content: center;
-    gap: 18px;
-    margin-top: 8px;
-  }
-
-  .research-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  h1 { font-size: 2.2rem !important; }
+  html { font-size: 15.5px; }
+  section { padding-left: 22px !important; padding-right: 22px !important; }
+  header > div { padding-left: 22px !important; padding-right: 22px !important; }
+  header nav { display: flex !important; width: 100%; justify-content: center; gap: 18px; margin-top: 8px; }
+  .research-grid { grid-template-columns: 1fr !important; }
+  h1 { font-size: 2.1rem !important; }
 }
 
 @media (max-width: 480px) {
-  #top canvas {
-    transform: scale(0.82);
-    transform-origin: 50% 20%;
-  }
+  #top canvas { transform: scale(0.82); transform-origin: 50% 20%; }
 }

@@ -148,10 +148,10 @@ export default function Home() {
   return (
     <div style={{ minHeight: "100vh", background: "#ffffff", color: "#1a1a1a" }}>
 
-      {/* ── HEADER — sólido teal siempre ── */}
+      {/* ── HEADER — charcoal navbar; institutional teal bar kept above ── */}
       <header style={{
         position: "fixed", inset: "0 0 auto 0", zIndex: 50,
-        background: "#0f5460",
+        background: "#202124", /* CHANGED: navbar background -> deep charcoal */
         borderBottom: "1px solid rgba(255,255,255,0.08)",
       }}>
         {/* Institutional data bar */}
@@ -193,27 +193,23 @@ export default function Home() {
 
           <nav style={{ display: "flex", alignItems: "center", gap: "32px" }}>
             {["About", "Research", "Services"].map(s => (
-              <a key={s} href={`#${s.toLowerCase()}`} style={{
+              <a key={s} href={`#${s.toLowerCase()}`} className="nav-link" style={{
                 fontFamily: "var(--font-sans)",
                 fontSize: "0.8rem",
                 letterSpacing: "0.06em",
-                color: "rgba(255,255,255,0.85)",
                 textDecoration: "none",
-                transition: "color 150ms"
               }}>{s}</a>
             ))}
-            <Link href="/resources" style={{
+            <Link href="/resources" className="nav-link" style={{
               fontFamily: "var(--font-sans)",
               fontSize: "0.8rem",
               letterSpacing: "0.06em",
-              color: "rgba(255,255,255,0.85)",
               textDecoration: "none",
             }}>Resources</Link>
-            <Link href="/contact" style={{
+            <Link href="/contact" className="nav-link" style={{
               fontFamily: "var(--font-sans)",
               fontSize: "0.8rem",
               letterSpacing: "0.06em",
-              color: "rgba(255,255,255,0.85)",
               textDecoration: "none",
             }}>Contact</Link>
           </nav>
@@ -423,7 +419,7 @@ export default function Home() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer style={{ background: "#0f5460" }}>
+      <footer style={{ background: "#202124" }}>
         <div style={{
           maxWidth: "var(--max-wide)",
           margin: "0 auto",
@@ -438,22 +434,22 @@ export default function Home() {
               fontFamily: "var(--font-mono)",
               fontSize: "0.625rem",
               letterSpacing: "0.28em",
-              color: "rgba(255,255,255,0.5)",
+              color: "rgba(224,224,224,0.6)", /* CHANGED: lighter near-white for subtle emphasis */
               textTransform: "uppercase",
               marginBottom: "16px",
             }}>
               OMETEOTL
             </div>
-            <p style={{ fontSize: "0.8125rem", marginBottom: "6px", color: "rgba(255,255,255,0.8)", fontFamily: "Georgia, serif" }}>AI Risk & Epistemic Reliability Lab</p>
-            <p style={{ fontSize: "0.8125rem", marginBottom: "16px", color: "rgba(255,255,255,0.8)", fontFamily: "Georgia, serif" }}>Lima, Peru</p>
+            <p style={{ fontSize: "0.8125rem", marginBottom: "6px", color: "rgba(224,224,224,0.85)", fontFamily: "Georgia, serif" }}>AI Risk & Epistemic Reliability Lab</p>
+            <p style={{ fontSize: "0.8125rem", marginBottom: "16px", color: "rgba(224,224,224,0.85)", fontFamily: "Georgia, serif" }}>Lima, Peru</p>
             <a
               href="mailto:contact@ometeotl.org"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "0.7rem",
                 letterSpacing: "0.06em",
-                color: "rgba(255,255,255,0.7)",
-                borderBottom: "1px solid rgba(255,255,255,0.2)",
+                color: "rgba(224,224,224,0.85)",
+                borderBottom: "1px solid rgba(224,224,224,0.15)",
                 paddingBottom: "2px",
                 display: "inline-block",
                 textDecoration: "none",
@@ -467,7 +463,7 @@ export default function Home() {
             fontFamily: "var(--font-mono)",
             fontSize: "0.6rem",
             letterSpacing: "0.1em",
-            color: "rgba(255,255,255,0.35)",
+            color: "rgba(224,224,224,0.6)",
             textTransform: "uppercase",
           }}>
             © 2026 Ometeotl

@@ -133,7 +133,7 @@ export default function Home() {
     <div className="min-h-screen bg-white text-neutral-900">
 
       {/* HEADER */}
-      <header className={`fixed inset-x-0 top-0 z-50 ${teal} border-b border-white/10`}>
+      <header className={`fixed inset-x-0 top-0 z-50 bg-[#202124] border-b border-white/10`}> {/* CHANGED: navbar background -> deep charcoal */}
         <div className="border-b border-white/10 bg-[#0a3d47]">
           <div className={`${container} py-[5px]`}>
             <div className="font-mono text-[10px] tracking-[0.08em] text-white/60">
@@ -146,10 +146,10 @@ export default function Home() {
           <Link href="/" className="font-sans text-[13px] font-semibold tracking-[0.18em] text-white uppercase">OMETEOTL</Link>
           <nav className="flex items-center gap-7">
             {["About", "Research", "Services"].map((s) => (
-              <a key={s} href={`#${s.toLowerCase()}`} className="font-sans text-[12px] tracking-[0.06em] text-white/75 hover:text-white transition-colors">{s}</a>
+              <a key={s} href={`#${s.toLowerCase()}`} className="nav-link font-sans text-[12px] tracking-[0.06em] text-white/75 hover:text-white transition-colors">{s}</a>
             ))}
-            <Link href="/resources" className="font-sans text-[12px] tracking-[0.06em] text-white/75 hover:text-white transition-colors">Resources</Link>
-            <Link href="/contact" className="font-sans text-[12px] tracking-[0.06em] text-white/75 hover:text-white transition-colors">Contact</Link>
+            <Link href="/resources" className="nav-link font-sans text-[12px] tracking-[0.06em] text-white/75 hover:text-white transition-colors">Resources</Link>
+            <Link href="/contact" className="nav-link font-sans text-[12px] tracking-[0.06em] text-white/75 hover:text-white transition-colors">Contact</Link>
           </nav>
         </div>
       </header>
@@ -232,15 +232,15 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer className={teal}>
+      <footer className="bg-[#202124]"> {/* CHANGED: footer background -> deep charcoal */}
         <div className={`${container} py-14 grid grid-cols-1 gap-8 md:grid-cols-[1fr_auto] md:items-end`}>
           <div>
-            <div className="font-mono text-[10px] tracking-[0.28em] text-white/45 uppercase mb-3">OMETEOTL</div>
-            <p className="font-sans text-[13px] text-white/75 mb-1">AI Risk & Epistemic Reliability Lab</p>
-            <p className="font-sans text-[13px] text-white/75 mb-4">Lima, Peru</p>
-            <a href="mailto:contact@ometeotl.org" className="font-mono text-[11px] tracking-[0.1em] text-white/55 underline decoration-white/20 underline-offset-[5px] hover:text-white/75">contact@ometeotl.org</a>
+            <div className="font-mono text-[10px] tracking-[0.28em] uppercase mb-3" style={{ color: 'rgba(224,224,224,0.6)' }}>OMETEOTL</div>
+            <p className="font-sans text-[13px] mb-1" style={{ color: 'rgba(224,224,224,0.85)' }}>AI Risk & Epistemic Reliability Lab</p>
+            <p className="font-sans text-[13px] mb-4" style={{ color: 'rgba(224,224,224,0.85)' }}>Lima, Peru</p>
+            <a href="mailto:contact@ometeotl.org" className="font-mono text-[11px] tracking-[0.1em] underline decoration-white/20 underline-offset-[5px] hover:text-white/75" style={{ color: 'rgba(224,224,224,0.8)' }}>contact@ometeotl.org</a>
           </div>
-          <div className="font-mono text-[10px] tracking-[0.14em] text-white/30 uppercase">© 2026 Ometeotl</div>
+          <div className="font-mono text-[10px] tracking-[0.14em] uppercase" style={{ color: 'rgba(224,224,224,0.6)' }}>© 2026 Ometeotl</div>
         </div>
       </footer>
     </div>
