@@ -13,7 +13,7 @@
   --font-mono: 'DM Mono', 'Courier New', monospace;
   --max-text:  720px;
   --max-wide:  1240px;
-  --ui-charcoal: #202124; /* CHANGED: single token for navbar/footer charcoal */
+  --ui-charcoal: #2B2D31; /* CHANGED: single token for navbar/footer charcoal (updated to requested #2B2D31) */
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,13 +32,13 @@ body { background: var(--bg); min-height: 100vh; }
 
 /* Nav link styles for charcoal navbar: subtle hover (lighten + underline) */
 .nav-link {
-  color: rgba(255,255,255,0.90); /* text-white/90 for nav links */
-  transition: color 140ms ease, text-decoration-color 140ms ease;
+  color: rgba(255,255,255,0.85); /* nav links: near-white (text-white/85) per spec */
+  transition: text-decoration-color 140ms ease;
 }
 .nav-link:hover,
 .nav-link:focus {
-  color: rgba(255,255,255,1); /* hover -> full white */
-  text-decoration: underline; /* subtle underline on hover */
+  /* Hover: subtle underline only (no color shift) */
+  text-decoration: underline;
   text-decoration-color: rgba(255,255,255,0.12);
 }
 

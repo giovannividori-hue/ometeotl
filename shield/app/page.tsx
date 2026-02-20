@@ -133,12 +133,12 @@ export default function Home() {
     <div className="min-h-screen bg-white text-neutral-900">
 
       {/* HEADER */}
-      <header className={`fixed inset-x-0 top-0 z-50 bg-[#202124] border-b border-white/10`}> {/* CHANGED: navbar background -> deep charcoal */}
+        <header className={`sticky top-0 z-50 border-b border-white/10`} style={{ background: 'var(--ui-charcoal)' }}> {/* CHANGED: make header sticky and use --ui-charcoal token */}
           <div className="border-b border-white/10" style={{ background: 'var(--ui-charcoal)' }}>
           <div className={`${container} py-[5px]`}>
-            <div className="font-mono text-[10px] tracking-[0.08em] text-white/60">
+              <div className="font-mono text-[10px] tracking-[0.08em]" style={{ color: 'rgba(255,255,255,0.75)' }}>
                 Est. 2024 · Lima, Peru · 3 Active Research Lines ·{" "}
-              <a className="underline underline-offset-4 hover:text-white/80" href="mailto:contact@ometeotl.org">contact@ometeotl.org</a>
+                <a className="underline underline-offset-4" href="mailto:contact@ometeotl.org" style={{ color: 'rgba(255,255,255,0.75)' }}>contact@ometeotl.org</a>
             </div>
           </div>
         </div>
