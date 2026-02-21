@@ -1,88 +1,258 @@
+/* app/globals.css */
 @import "tailwindcss";
 
+/* ---------------------------
+   ETH-like system tokens (strict)
+   - Grid: 12 cols, gutter 16px, max 1348px
+   - Offsets: 24 / 40 / 96
+   - Color: B/W base + ETH Petrol (structure) + ETH Red (interaction)
+---------------------------- */
 :root {
-  --bg:        #ffffff;
-  --fg:        #151515;
-  --fg-mid:    #4a4a4a;
-  --fg-low:    #8a8a8a;
-  --accent:    #0f5460;
-  --accent-hi: #0a3d47;
-  --rule:      rgba(17,17,17,0.05);
-  --rule-mid:  rgba(17,17,17,0.08);
-  --font-sans: 'DM Sans', system-ui, sans-serif;
-  --font-mono: 'DM Mono', 'Courier New', monospace;
-  --max-text:  720px;
-  --max-wide:  1240px;
-  --ui-charcoal: #2B2D31;
+  /* Base surfaces */
+  --bg: #ffffff;
+  --fg: #111213;
+
+  /* ETH interaction (links / primary actions) */
+  --eth-red: #e60028;
+
+  /* ETH Petrol (structure only) */
+  --eth-petrol: #007894;        /* 100% */
+  --eth-petrol-10: #e7f4f7;     /* 10% */
+  --eth-petrol-20: #cce4ea;     /* 20% */
+  --eth-petrol-40: #99cad5;     /* 40% */
+  --eth-petrol-60: #66afc0;     /* 60% */
+  --eth-petrol-80: #3395ab;     /* 80% */
+  --eth-petrol-120: #00596d;    /* 120% */
+
+  /* Neutral strokes (token-first) */
+  --stroke-strong: rgba(17, 18, 19, 0.16);
+  --stroke: rgba(17, 18, 19, 0.10);
+  --stroke-soft: rgba(17, 18, 19, 0.07);
+
+  /* Typography vars (injected by next/font in layout.tsx) */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Courier New", monospace;
+
+  /* Grid */
+  --max-width: 1348px;
+  --gutter: 16px;
+
+  /* Offsets per breakpoint */
+  --offset: 24px;
+
+  /* Fixed spacing scale */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  /* Responsive spacing curve (mobile baseline) */
+  --space-curve-8: 4px;
+  --space-curve-12: 8px;
+  --space-curve-16: 12px;
+  --space-curve-20: 12px;
+  --space-curve-24: 16px;
+  --space-curve-32: 20px;
+  --space-curve-40: 24px;
+  --space-curve-48: 32px;
+  --space-curve-64: 48px;
+
+  /* Base font size */
+  --base: 17px;
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Tablet/Desktop curve */
+@media (min-width: 768px) {
+  :root {
+    --space-curve-8: 8px;
+    --space-curve-12: 12px;
+    --space-curve-16: 16px;
+    --space-curve-20: 20px;
+    --space-curve-24: 24px;
+    --space-curve-32: 24px;
+    --space-curve-40: 32px;
+    --space-curve-48: 48px;
+    --space-curve-64: 64px;
+  }
+}
+
+/* Offsets per breakpoint */
+@media (min-width: 1024px) {
+  :root { --offset: 40px; }
+}
+@media (min-width: 1280px) {
+  :root { --offset: 96px; }
+}
+@media (min-width: 1440px) {
+  :root { --offset: 96px; }
+}
+
+/* ---- Global hygiene ---- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 html {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
   scroll-behavior: smooth;
+  font-size: var(--base);
 }
 
-body { background: var(--bg); min-height: 100vh; }
-
-.nav-link {
-  color: rgba(255,255,255,0.85);
-  transition: text-decoration-color 140ms ease;
-}
-.nav-link:hover,
-.nav-link:focus {
-  text-decoration: underline;
-  text-decoration-color: rgba(255,255,255,0.12);
-}
-
-h1, h2, h3 {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.08;
+body {
+  background: var(--bg);
   color: var(--fg);
+  line-height: 1.68;
+  min-height: 100vh;
+  overflow-x: clip;
 }
 
-h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); }
-h2 { font-size: clamp(1.4rem, 2.8vw, 2rem); }
-h3 { font-size: 0.95rem; font-weight: 600; }
-
-p {
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  line-height: 1.75;
-  color: var(--fg-mid);
-}
-
-a { color: inherit; text-decoration: none; }
-
-section { scroll-margin-top: 100px; }
-
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.10); border-radius: 2px; }
-
-::selection { background: rgba(15,84,96,0.10); }
-
-/* Fix: sections must NOT have left/right padding — that's handled by container divs inside */
+/* Fixed header offset for anchors */
 section {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+  scroll-margin-top: 112px;
 }
 
-@media (max-width: 768px) {
-  html { font-size: 15.5px; }
-  header > div { padding-left: 22px !important; padding-right: 22px !important; }
-  header nav { display: flex !important; width: 100%; justify-content: center; gap: 18px; margin-top: 8px; }
-  .research-grid { grid-template-columns: 1fr !important; }
-  h1 { font-size: 2.1rem !important; }
+/* Selection */
+::selection {
+  background: var(--eth-petrol-20);
 }
 
-@media (max-width: 480px) {
-  #top canvas { transform: scale(0.82); transform-origin: 50% 20%; }
+/* Minimal scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 4px;
+}
+
+/* ETH container: max-width 1348, offsets per breakpoint */
+.eth-container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--offset);
+}
+
+/* Strict 12-column grid helper */
+.eth-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  row-gap: var(--gutter);
+}
+
+/* Strokes & rules */
+.eth-rule { height: 1px; background: var(--stroke-soft); }
+.eth-border { border: 1px solid var(--stroke); }
+.eth-border-soft { border: 1px solid var(--stroke-soft); }
+
+/* Navigation links: neutral, institutional */
+.eth-navlink {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: rgba(0, 0, 0, 0.72);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+.eth-navlink:hover { color: rgba(0, 0, 0, 0.92); }
+.eth-navlink:focus-visible {
+  outline: 2px solid var(--eth-red);
+  outline-offset: 2px;
+}
+
+/* Links: ETH red underline */
+.eth-link {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  color: var(--eth-red);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(230, 0, 40, 0.45);
+}
+.eth-link:hover { text-decoration-color: rgba(230, 0, 40, 0.8); }
+.eth-link:focus-visible {
+  outline: 2px solid var(--eth-red);
+  outline-offset: 3px;
+}
+
+/* Buttons (sharp, accessible, not “mood”) */
+.eth-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 14px;
+  border-radius: 0;
+  border: 1px solid transparent;
+
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.eth-btn-primary {
+  background: var(--eth-red);
+  color: #fff;
+  border-color: var(--eth-red);
+}
+.eth-btn-primary:hover {
+  background: rgba(230, 0, 40, 0.92);
+  border-color: rgba(230, 0, 40, 0.92);
+}
+
+.eth-btn-secondary {
+  background: transparent;
+  color: rgba(0, 0, 0, 0.78);
+  border-color: rgba(0, 0, 0, 0.22);
+}
+.eth-btn-secondary:hover {
+  border-color: rgba(0, 0, 0, 0.38);
+  color: rgba(0, 0, 0, 0.92);
+}
+
+.eth-btn:focus-visible {
+  outline: 2px solid var(--eth-red);
+  outline-offset: 3px;
+}
+
+/* Skip link (a11y) */
+.skip-link {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateY(-120%);
+  background: #fff;
+  color: #000;
+  border: 1px solid var(--stroke);
+  padding: 8px 12px;
+  z-index: 1000;
+
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid var(--eth-red);
+  outline-offset: 3px;
 }

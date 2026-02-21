@@ -42,70 +42,86 @@ export default function ResourcesPage() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#080808", color: "#eaeaea", fontFamily: "'DM Sans', system-ui, sans-serif" }}>
-
-      <style>{"@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,700&family=DM+Sans:wght@300;400;700&display=swap');"}</style>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--fg)", fontFamily: "var(--font-sans)" }}>
 
       <header style={{
         position: "fixed", inset: "0 0 auto 0", zIndex: 50,
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
-        background: "rgba(8,8,8,0.85)",
-        backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+        borderBottom: "1px solid var(--rule)",
+        background: "rgba(8,8,8,0.6)",
+        backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
       }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 40px", height: "60px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <Link href="/" style={{ fontFamily: "'DM Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace", fontSize: "0.75rem", letterSpacing: "0.28em", color: "#eaeaea", textTransform: "uppercase" }}>OMETEOTL</Link>
+        <div style={{ maxWidth: "var(--max-wide)", margin: "0 auto", padding: "0 40px", height: "60px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Link href="/" style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", letterSpacing: "0.28em", color: "var(--fg)", textTransform: "uppercase" }}>OMETEOTL</Link>
 
           <nav style={{ display: "flex", alignItems: "center", gap: "28px" }}>
-            {['About','Research','Services'].map(s => <a key={s} href={`#${s.toLowerCase()}`} style={{ color: "#eaeaea", opacity: 0.9 }}>{s}</a>)}
-            <Link href="/resources" style={{ color: "#3d8f80" }}>Resources</Link>
-            <Link href="/contact" style={{ color: "#eaeaea" }}>Contact</Link>
+            {['About','Research','Services'].map(s => <a key={s} href={`#${s.toLowerCase()}`} className="navlink">{s}</a>)}
+            <Link href="/resources" className="navlink" style={{ color: "var(--accent)" }}>Resources</Link>
+            <Link href="/contact" className="navlink">Contact</Link>
           </nav>
         </div>
       </header>
 
-      <main style={{ paddingTop: 80, maxWidth: 1200, margin: "0 auto", padding: "100px 24px 80px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 32, alignItems: "start" }}>
+      <main style={{ paddingTop: 88, maxWidth: "var(--max-wide)", margin: "0 auto", padding: "100px 24px 80px" }}>
+        <div className="resources-grid" style={{ display: "grid", gridTemplateColumns: "65% 35%", gap: 32, alignItems: "start" }}>
 
-          <section style={{ background: "#0b0b0b", border: "1px solid rgba(255,255,255,0.03)", borderRadius: 8, padding: 20, minHeight: 520 }}>
-            <h2 style={{ margin: 0, marginBottom: 12, fontFamily: "'DM Sans', system-ui, sans-serif", fontWeight: 400 }}>AI Risk Monitor — Chat</h2>
-            <div style={{ marginBottom: 12, color: "rgba(255,255,255,0.6)", fontSize: 13 }}>Interroga al monitor para evaluar respuestas y riesgos del modelo.</div>
+          {/* Chat column */}
+          <section className="resources-chat" style={{ background: "transparent", padding: 0, minHeight: 520 }}>
+            <div className="label" style={{ marginBottom: 12 }}>SHIELD — AI RISK MONITOR</div>
+            <h2 style={{ margin: 0, marginBottom: 8, color: "var(--fg)", fontWeight: 400 }}>AI Risk Monitor — Chat</h2>
+            <p style={{ color: "var(--fg-mid)", marginBottom: 18 }}>Interroga al monitor para evaluar respuestas y riesgos del modelo.</p>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 12, maxHeight: 380, overflow: "auto", padding: 8 }}>
+            <div className="messages-list" style={{ display: 'flex', flexDirection: 'column', gap: 12, maxHeight: 420, overflow: 'auto', paddingRight: 8 }}>
               {messages.map((m, i) => (
-                <div key={i} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', background: m.role === 'user' ? '#1b4f45' : 'transparent', border: m.role === 'assistant' ? '1px solid rgba(255,255,255,0.03)' : 'none', padding: '10px 12px', borderRadius: 6, maxWidth: '78%' }}>
-                  <div style={{ fontSize: 13, color: m.role === 'user' ? '#e6fff9' : '#e7e7e7', fontFamily: m.role === 'user' ? "'DM Mono'" : "'DM Sans'" }}>{m.content}</div>
+                <div key={i} style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
+                  <div style={{
+                    padding: '10px 14px',
+                    maxWidth: '78%',
+                    fontFamily: m.role === 'user' ? 'var(--font-mono)' : 'var(--font-sans)',
+                    color: 'var(--fg)',
+                    border: m.role === 'user' ? '1px solid var(--rule-mid)' : 'none',
+                    background: m.role === 'user' ? 'transparent' : 'transparent'
+                  }}>{m.content}</div>
                 </div>
               ))}
             </div>
 
-            <form onSubmit={send} style={{ marginTop: 12, display: 'flex', gap: 8 }}>
-              <input value={input} onChange={e => setInput(e.target.value)} placeholder={loading ? 'Enviando...' : 'Escribe tu consulta...'} disabled={loading} style={{ flex: 1, padding: '10px 12px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.04)', background: '#060606', color: '#fff' }} />
-              <button type="submit" disabled={loading} style={{ background: '#3d8f80', border: 'none', color: '#04120f', padding: '10px 14px', borderRadius: 6, fontWeight: 600 }}>{loading ? '...' : 'Enviar'}</button>
+            <form onSubmit={send} className="resources-form" style={{ marginTop: 18 }}>
+              <div style={{ borderTop: '1px solid var(--rule)', paddingTop: 12, display: 'flex', gap: 12 }}>
+                <input className="resources-input" value={input} onChange={e => setInput(e.target.value)} placeholder={loading ? 'Enviando...' : 'Escribe tu consulta...'} disabled={loading}
+                  style={{ flex: 1, padding: '12px 14px', border: 'none', outline: 'none', fontFamily: 'var(--font-sans)', color: 'var(--fg)', background: 'transparent' }} />
+                <button className="resources-send" type="submit" disabled={loading} style={{ background: 'var(--accent)', border: 'none', color: '#04120f', padding: '10px 14px', fontWeight: 600 }}>{loading ? '...' : 'Enviar'}</button>
+              </div>
             </form>
           </section>
 
-          <aside style={{ background: '#070707', border: '1px solid rgba(255,255,255,0.03)', borderRadius: 8, padding: 20, height: 520 }}>
-            <h3 style={{ margin: 0, marginBottom: 14 }}>Indicadores</h3>
-            <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, marginBottom: 18 }}>Memoria = pérdida de contexto · Confianza = riesgo de alucinación · Dominio = fuera de entrenamiento</div>
+          {/* Indicators panel */}
+          <aside className="resources-indicators" style={{ background: 'transparent', padding: 0, minHeight: 520 }}>
+            <div className="label" style={{ marginBottom: 12 }}>Indicadores</div>
+            <div style={{ color: 'var(--fg-mid)', marginBottom: 18, fontSize: 13 }}>Memoria = pérdida de contexto · Confianza = riesgo de alucinación · Dominio = fuera de entrenamiento</div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-              {['memoria','confianza','dominio'].map((k) => {
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              {(['memoria','confianza','dominio'] as const).map((k) => {
                 const val = indicators ? (indicators as any)[k] : 50
+                const clamped = Math.max(0, Math.min(100, val))
+                let color = '#3d8f80'
+                if (clamped > 66) color = '#c0392b'
+                else if (clamped > 33) color = '#c8b89a'
+
                 return (
                   <div key={k}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6, fontFamily: "'DM Mono'", fontSize: 13 }}>
-                      <div style={{ textTransform: 'capitalize' }}>{k}</div>
-                      <div>{val}</div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--fg)' }}>{k}</div>
+                      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--fg)' }}>{clamped}</div>
                     </div>
-                    <div style={{ background: 'rgba(255,255,255,0.04)', height: 10, borderRadius: 6 }}>
-                      <div style={{ width: `${Math.max(0, Math.min(100, val))}%`, height: '100%', background: '#3d8f80', borderRadius: 6 }} />
+                    <div style={{ background: 'rgba(255,255,255,0.03)', height: 2, borderRadius: 2 }}>
+                      <div style={{ width: `${clamped}%`, height: '100%', background: color }} />
                     </div>
                   </div>
                 )
               })}
             </div>
 
-            <div style={{ marginTop: 26, fontSize: 12, color: 'rgba(255,255,255,0.5)' }}>Última evaluación: {indicators ? 'reciente' : '—'}</div>
+            <div style={{ marginTop: 26, fontSize: 12, color: 'var(--fg-mid)' }}>Última evaluación: {indicators ? 'reciente' : '—'}</div>
           </aside>
 
         </div>
