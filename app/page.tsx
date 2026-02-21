@@ -3,9 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import HeroCanvas from "@/components/HeroCanvas";
-import SpecPanel from "@/components/SpecPanel";
-import ResearchCard, { type Card } from "@/components/ResearchCard";
+import HeroCanvas from "./components/HeroCanvas";
+import SpecPanel from "./components/SpecPanel";
+import ResearchCard, { type Card } from "./components/ResearchCard";
 
 const HERO_IMAGE = "/hero-risk-structure.jpg";
 
